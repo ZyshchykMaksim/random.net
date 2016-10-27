@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>RANDOM</id>
+        <version>1.0.0</version>
+        <title>RANDOM</title>
+        <authors>zyshchyk.maksim</authors>
+        <owners>zyshchyk.maksim</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>It allows you to strings, generate passwords and registration codes.</description>
+        <copyright></copyright>
+        <tags>generate strings, passwords or registration codes </tags>
+    </metadata>
+    <files>
+        <file src="bin\Debug\RANDOM.dll" target="lib\net40\RANDOM.dll" />
+        <file src="README.txt" target="lib\net40\README.txt" />
+    </files>
+</package>
