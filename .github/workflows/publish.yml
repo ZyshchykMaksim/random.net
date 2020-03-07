@@ -21,7 +21,7 @@ jobs:
         run: dotnet pack --configuration Release
       - name: Push package to GitHub Package Registry
         run: dotnet nuget push **/*.nupkg 
-             --api-key ${{ secrets.action_nuget_package }} 
+             --api-key 1e823cc6f74ed2f4ae4e6d9c6dfc33f6c717227e 
              --source https://nuget.pkg.github.com/ZyshchykMaksim/index.json 
              --no-symbols true
 
