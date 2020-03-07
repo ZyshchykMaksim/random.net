@@ -19,8 +19,10 @@ jobs:
       - name: Install NuGet client
         uses: warrenbuckley/Setup-Nuget@v1
 
-      - name: Add private GitHub registry to NuGet configuration
+      - name: Add source to NuGet configuration
         run: nuget sources add -name "github" -Source https://nuget.pkg.github.com/ZyshchykMaksim/index.json -Username ZyshchykMaksim -Password ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Add apikey to NuGet configuration
         run: nuget setapikey ${{ secrets.GITHUB_TOKEN }} -Source "github"
 
       - name: Pack package
