@@ -1,11 +1,10 @@
-name: Publish to Nuget Package
+name: Nuget Package Deploy
 on:
   push:
     branches:
       - master # Default release branch
 jobs:
-  publish:
-    name: list on nuget
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,15 +12,19 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.100
-      
-      # Publish
-      - name: publish on version change
-        uses: rohith/publish-nuget@v2
-        with:
-          PROJECT_FILE_PATH: RANDOM/RANDOM.csproj # Relative to repository root
-          # VERSION_FILE_PATH: Directory.Build.props # Filepath with version info, relative to repository root. Defaults to project file
-          # VERSION_REGEX: <Version>(.*)<\/Version> # Regex pattern to extract version info in a capturing group
-          # TAG_COMMIT: true # Flag to enable / disalge git tagging
-          # TAG_FORMAT: v* # Format of the git tag, [*] gets replaced with version
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}} # nuget.org API key
-          # PACKAGE_NAME: NuGet package name, required when it's different from project name. Defaults to project name       
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Pack Nuget Package
+        run: dotnet pack --configuration Release
+      - name: Push package to GitHub Package Registry
+        run: dotnet nuget push **/*.nupkg 
+             --api-key ${{secrets.NUGET_API_KEY}} 
+             --source https://nuget.pkg.github.com/ZyshchykMaksim/index.json 
+             --no-symbols true
+
+
+
+    
