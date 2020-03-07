@@ -8,24 +8,24 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2     
-      - name: Setup dotnet
+      - name: SETUP DOTNET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.100
       
-      - name: dotnet build
+      - name: DOTNET BUILD
         run: dotnet build --configuration Release
 
-      - name: Install NuGet client
+      - name: INSTALL NUGET CLIENT
         uses: warrenbuckley/Setup-Nuget@v1
 
-      - name: Add private GitHub registry to NuGet configuration
+      - name: ADD PRIVATE GITHUB REGISTRY TO NUGET CONFIGURATION
         run: nuget sources add -name "github" -Source https://nuget.pkg.github.com/ZyshchykMaksim/index.json -Username ZyshchykMaksim -Password ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pack package
+      - name: PACK PACKAGE
         run: dotnet pack -c Release -o out
 
-      - name: Push nuget package to GitHub Registry
+      - name: PUSH NUGET PACKAGE TO GITHUB REGISTRY
         run: nuget push .\out\*.nupkg -Source "github" -SkipDuplicate
 
     
