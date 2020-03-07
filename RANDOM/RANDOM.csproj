@@ -12,8 +12,6 @@
     <Authors>zyshchykmaksim</Authors>
     <Company>zyshchykmaksim</Company>
     <Version>1.0.4</Version>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
 </Project>
