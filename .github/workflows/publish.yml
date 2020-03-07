@@ -5,26 +5,28 @@ on:
       - master # Default release branch
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup dotnet
+     
+     - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.100
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Pack Nuget Package
-        run: dotnet pack --configuration Release
-      - name: Push package to GitHub Package Registry
-        run: dotnet nuget push **/*.nupkg 
-             --api-key ${{ secrets.GITHUB_TOKEN }} 
-             --source https://nuget.pkg.github.com/ZyshchykMaksim/index.json 
-             --no-symbols true
+      
+      - name: dotnet build
+        run: dotnet build --configuration Release
 
+      - name: Install NuGet client
+        uses: warrenbuckley/Setup-Nuget@v1
 
+      - name: Add private GitHub registry to NuGet configuration
+        run: nuget sources add -name "github" -Source https://nuget.pkg.github.com/ZyshchykMaksim/index.json -Username ZyshchykMaksim -Password ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pack package
+        run: dotnet pack -c Release -o out
+
+      - name: Push nuget package to GitHub Registry
+        run: nuget push .\out\*.nupkg -Source "github" -SkipDuplicate
 
     
