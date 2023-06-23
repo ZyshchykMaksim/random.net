@@ -1,4 +1,4 @@
-name: Nuget Package Deploy
+name: LuckyDay.Platform.Microservice.Template Nuget Package Deploy
 on:
   push:
     branches:
@@ -16,13 +16,13 @@ jobs:
           dotnet-version: 7.0.x
       
       - name: Add source to NuGet configuration
-        run: dotnet nuget add source https://nuget.pkg.github.com/ZyshchykMaksim/index.json --name "github" --username ZyshchykMaksim --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+        run: dotnet nuget add source https://nuget.pkg.github.com/luckydayteam/index.json --name "github" --username luckydayteam --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
       
       - name: Build project
         run: dotnet build --configuration Release
       
       - name: Pack package
-        run: dotnet pack -c Release -o .
+        run: dotnet pack "LuckyDay.Platform.Microservice.Template.Pack.csproj" -c Release -o .
 
       - name: Push nuget package to GitHub Registry
         run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
