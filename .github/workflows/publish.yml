@@ -15,16 +15,16 @@ jobs:
         with:
           dotnet-version: 7.0.x
       
-      - name: Build project
-        run: dotnet build --configuration Release
-
       - name: Add source to NuGet configuration
         run: dotnet nuget add source https://nuget.pkg.github.com/ZyshchykMaksim/index.json --name "github" --username ZyshchykMaksim --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
       
+      - name: Build project
+        run: dotnet build --configuration Release
+      
       - name: Pack package
-        run: dotnet pack -c Release -o out
+        run: dotnet pack -c Release -o
 
       - name: Push nuget package to GitHub Registry
-        run: dotnet nuget push .\out\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
 
     
