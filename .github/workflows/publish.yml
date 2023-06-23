@@ -5,30 +5,26 @@ on:
       - master
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2     
-      - name: Setup dotnet
+      - name: Checkout repository
+      - uses: actions/checkout@v1  
+      
+      - name: Setup .NET environment
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 7.0.x
       
-      - name: dotnet build
+      - name: Build project
         run: dotnet build --configuration Release
 
-      - name: Install NuGet client
-        uses: warrenbuckley/Setup-Nuget@v1
-
       - name: Add source to NuGet configuration
-        run: nuget sources add -name "github" -Source https://nuget.pkg.github.com/ZyshchykMaksim/index.json -Username ZyshchykMaksim -Password ${{ secrets.GITHUB_TOKEN }}
+        run: dotnet nuget add source https://nuget.pkg.github.com/ZyshchykMaksim/index.json --name "github" --username ZyshchykMaksim --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
       
-      - name: Add apikey to NuGet configuration
-        run: nuget setapikey ${{ secrets.GITHUB_TOKEN }} -Source "github"
-
       - name: Pack package
         run: dotnet pack -c Release -o out
 
       - name: Push nuget package to GitHub Registry
-        run: nuget push .\out\*.nupkg -Source "github" -SkipDuplicate
+        run: dotnet nuget push .\out\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
 
     
