@@ -22,7 +22,7 @@ jobs:
         run: dotnet build --configuration Release
       
       - name: Pack package
-        run: dotnet pack -c Release -o
+        run: dotnet pack -c Release -o .
 
       - name: Push nuget package to GitHub Registry
         run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
